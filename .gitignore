@@ -1,0 +1,5 @@
+# Ignore data and output folders
+data/
+multi_class_new_data/
+__pycache__/
+*.pth
