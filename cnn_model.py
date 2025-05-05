@@ -16,17 +16,14 @@ class CNN(nn.Module):
         # Dropout pour éviter le surapprentissage (0.3 est une valeur courante)
         self.dropout = nn.Dropout(0.3)
 
-        # Après 3x MaxPool2d sur 256x256 :
-        # 256 → 128 → 64 → 32
-        # Donc : 64 canaux * 32 * 32 = 65536
+        # Couche entièrement connectée (fully connected) avec 256 neurones
         self.fc1 = nn.Linear(64 * 32 * 32, 256)
         self.fc2 = nn.Linear(256, num_classes)
 
     def forward(self, x):
-        # x: [batch, 3, 256, 256]
-        x = self.pool(F.relu(self.conv1(x)))  # -> [batch, 32, 128, 128]
-        x = self.pool(F.relu(self.conv2(x)))  # -> [batch, 64, 64, 64]
-        x = self.pool(F.relu(self.conv3(x)))  # -> [batch, 128, 32, 32]
+        x = self.pool(F.relu(self.conv1(x)))  # -> [batch, 16, 128, 128]
+        x = self.pool(F.relu(self.conv2(x)))  # -> [batch, 32, 64, 64]
+        x = self.pool(F.relu(self.conv3(x)))  # -> [batch, 64, 32, 32]
 
         x = x.view(x.size(0), -1)             # flatten
         x = F.relu(self.fc1(x))
